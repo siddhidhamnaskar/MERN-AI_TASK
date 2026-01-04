@@ -16,6 +16,7 @@ export default function App() {
   const [result, setResult] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
 
   const nodes = [
     {
@@ -49,15 +50,24 @@ export default function App() {
   const runFlow = async () => {
     if (!inputText) return alert("Enter text first");
 
-    const res = await axios.post("http://localhost:5000/api/ask-ai", {
-      prompt: inputText,
-    });
+    setError(""); // Clear previous errors
 
-    setResult(res.data.answer);
+    try {
+      const res = await axios.post("http://localhost:5000/api/ask-ai", {
+        prompt: inputText,
+      });
+
+      setResult(res.data.answer);
+    } catch (err) {
+      console.log(err);
+      setError(err.response.data.error || err.message || "An error occurred while fetching the result.");
+    }
   };
 
   const saveToDB = async () => {
   if (!inputText || !result) return;
+
+  setError(""); // Clear previous errors
 
   try {
     setSaving(true);
@@ -75,7 +85,7 @@ export default function App() {
 
     setSaved(true);
   } catch (err) {
-    alert("Failed to save");
+    setError(err.response.data.error || err.message || "An error occurred while saving the message.");
   } finally {
     setSaving(false);
   }
@@ -86,6 +96,11 @@ export default function App() {
     <>
   
     <div style={{ height: "100vh" ,width: "100vw", position: 'relative' }}>
+       {error && (
+          <p style={{ color: "red", margin: 0,justifyContent:'center', alignItems:'center', display:'flex', position: 'absolute', top: 50, left: '50%', transform: 'translateX(-50%)', zIndex: 10 }}>
+            ❌ {error}
+          </p>
+        )}
       <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', flexDirection: 'column', gap: '10px' }}>
         <button
           onClick={runFlow}
@@ -113,6 +128,7 @@ export default function App() {
             ✅ Saved to MongoDB
           </p>
         )}
+       
       </div>
       <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes}>
         <Background />
