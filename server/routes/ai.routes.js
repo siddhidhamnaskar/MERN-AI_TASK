@@ -1,6 +1,6 @@
 import express from "express";
-import { askAi } from "../controllers/askAi_controllers.js";
-import { saveResponse } from "../controllers/aIMesage_controller.js";
+import { askAi } from "../controllers/askAi.controllers.js";
+import { saveResponse } from "../controllers/AiMesage.controller.js";
 
 const router = express.Router();
 
