@@ -6,7 +6,7 @@ dotenv.config();
 const openRouter = new OpenRouter({
   apiKey: process.env.OPENROUTER_API_KEY,
   defaultHeaders: {
-    "HTTP-Referer": "http://localhost:3000",
+    "HTTP-Referer": process.env.SITE_URL,
     "X-Title": "MERN AI App",
   },
 });

@@ -53,7 +53,7 @@ export default function App() {
     setError(""); // Clear previous errors
 
     try {
-      const res = await axios.post("http://localhost:5000/api/ask-ai", {
+      const res = await axios.post(`${process.env.REACT_APP_API}/ask-ai`, {
         prompt: inputText,
       });
 
@@ -72,7 +72,7 @@ export default function App() {
   try {
     setSaving(true);
 
-    await fetch("http://localhost:5000/api/save-message", {
+    await fetch(`${process.env.REACT_APP_API}/save-message`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
