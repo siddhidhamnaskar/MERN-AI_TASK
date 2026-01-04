@@ -18,25 +18,30 @@ export default function App() {
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
 
-  const nodes = [
-    {
-      id: "1",
-      type: "inputNode",
-      position: { x: 50, y: 100 },
-      data: {
-        text: inputText,
-        onChange: setInputText,
-      },
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+
+
+ const nodes = [
+  {
+    id: "1",
+    type: "inputNode",
+    position: { x: centerX - 300, y: centerY - 50 },
+    data: {
+      text: inputText,
+      onChange: setInputText,
     },
-    {
-      id: "2",
-      type: "resultNode",
-      position: { x: 350, y: 100 },
-      data: {
-        result,
-      },
+  },
+  {
+    id: "2",
+    type: "resultNode",
+    position: { x: centerX + 50, y: centerY - 50 },
+    data: {
+      result,
     },
-  ];
+  },
+];
+
 
   const edges = [
     {
@@ -130,7 +135,7 @@ export default function App() {
         )}
        
       </div>
-      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes}>
+      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>
         <Background />
         <Controls />
       </ReactFlow>
