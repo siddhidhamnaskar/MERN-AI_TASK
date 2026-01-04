@@ -14,6 +14,8 @@ const nodeTypes = {
 export default function App() {
   const [inputText, setInputText] = useState("");
   const [result, setResult] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const nodes = [
     {
@@ -54,8 +56,37 @@ export default function App() {
     setResult(res.data.answer);
   };
 
+  const saveToDB = async () => {
+  if (!inputText || !result) return;
+
+  try {
+    setSaving(true);
+
+    await fetch("http://localhost:5000/api/save-message", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        prompt: inputText,
+        response: result,
+      }),
+    });
+
+    setSaved(true);
+  } catch (err) {
+    alert("Failed to save");
+  } finally {
+    setSaving(false);
+  }
+};
+
+
   return (
+    <>
+  
     <div style={{ height: "100vh" }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <button
         onClick={runFlow}
         style={{
@@ -68,11 +99,35 @@ export default function App() {
       >
         ▶ Run Flow
       </button>
+        <div style={{ marginTop: "10px" }}>
+        <button
+          onClick={saveToDB}
+          disabled={!result || saving}
+          style={{
+            padding: "8px 16px",
+            backgroundColor: result ? "#4CAF50" : "#ccc",
+            color: "white",
+            border: "none",
+            cursor: result ? "pointer" : "not-allowed",
+          }}
+        >
+          {saving ? "Saving..." : "Save"}
+        </button>
 
+        {saved && (
+          <p style={{ color: "green", marginTop: "5px" }}>
+            ✅ Saved to MongoDB
+          </p>
+        )}
+      </div>
+    </div>
       <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes}>
         <Background />
         <Controls />
       </ReactFlow>
     </div>
+  
+  </>
+
   );
 }
