@@ -1,27 +1,53 @@
-import axios from "axios";
+import { OpenRouter } from "@openrouter/sdk";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+const openRouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+  defaultHeaders: {
+    "HTTP-Referer": "http://localhost:3000",
+    "X-Title": "MERN AI App",
+  },
+});
 
 export const askAi = async (req, res) => {
- try {
+  try {
     const { prompt } = req.body;
 
-    const response = await axios.post(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        model: "mistralai/mistral-7b-instruct:free",
-        messages: [{ role: "user", content: prompt }],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    if (!prompt) {
+      return res.status(400).json({ error: "Prompt is required" });
+    }
 
-    const answer = response.data.choices[0].message.content;
-    res.json({ answer });
+    const completion = await openRouter.chat.send({
+      model: "mistralai/mistral-7b-instruct:free",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a text-only assistant. Do not describe images. Do not output HTML, markdown, or image tags. Generate short promotional text for an online store.",
+        },
+        { role: "user", content: prompt },
+      ],
+      stream: false,
+    });
+
+    let answer = completion.choices[0].message.content;
+
+      // Remove HTML tags
+      // answer = answer.replace(/<[^>]*>?/gm, "");
+
+      // Remove special tokens
+      answer = answer
+        .replace(/<s>/g, "")
+        .replace(/<\/s>/g, "")
+        .trim();
+      console.log("Cleaned Answer:", answer);
+      res.json({ answer });
+
+
   } catch (err) {
-    console.error(err.message);
+    console.error("OpenRouter Error:", err.message);
     res.status(500).json({ error: "AI failed" });
   }
-}
+};
