@@ -85,21 +85,16 @@ export default function App() {
   return (
     <>
   
-    <div style={{ height: "100vh" }}>
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <button
-        onClick={runFlow}
-        style={{
-          position: "absolute",
-          zIndex: 10,
-          top: 10,
-          left: 10,
-          padding: "8px 16px",
-        }}
-      >
-        ▶ Run Flow
-      </button>
-        <div style={{ marginTop: "10px" }}>
+    <div style={{ height: "100vh" ,width: "100vw", position: 'relative' }}>
+      <div style={{ position: 'absolute', top: 10, left: 10, zIndex: 10, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <button
+          onClick={runFlow}
+          style={{
+            padding: "8px 16px",
+          }}
+        >
+          ▶ Run Flow
+        </button>
         <button
           onClick={saveToDB}
           disabled={!result || saving}
@@ -113,14 +108,12 @@ export default function App() {
         >
           {saving ? "Saving..." : "Save"}
         </button>
-
         {saved && (
-          <p style={{ color: "green", marginTop: "5px" }}>
+          <p style={{ color: "green", margin: 0 }}>
             ✅ Saved to MongoDB
           </p>
         )}
       </div>
-    </div>
       <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes}>
         <Background />
         <Controls />

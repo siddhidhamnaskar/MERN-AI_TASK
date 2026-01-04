@@ -10,7 +10,7 @@ export default function InputNode({ data }) {
         style={{ width: "100%", marginTop: 5 }}
         value={data.text}
         onChange={(e) => data.onChange(e.target.value)}
-        placeholder="What is the capital of France?"
+        placeholder="Type Here..."
       />
 
       <Handle type="source" position="right" />
