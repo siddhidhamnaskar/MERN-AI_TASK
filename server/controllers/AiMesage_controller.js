@@ -14,6 +14,6 @@ export const saveResponse = async (req, res) => {
 
     res.status(201).json(savedMessage);
   } catch (error) {
-    res.status(500).json({ message: "Failed to save message" });
+    res.status(500).json({ error: "Failed to save message" });
   }
 }

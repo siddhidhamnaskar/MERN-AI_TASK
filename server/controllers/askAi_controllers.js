@@ -25,7 +25,7 @@ export const askAi = async (req, res) => {
         {
           role: "system",
           content:
-            "You are a text-only assistant. Do not describe images. Do not output HTML, markdown, or image tags. Generate short promotional text for an online store.",
+            "You are a text-only assistant. Do not describe images. Do not output HTML, markdown, or image tags",
         },
         { role: "user", content: prompt },
       ],
@@ -48,6 +48,6 @@ export const askAi = async (req, res) => {
 
   } catch (err) {
     console.error("OpenRouter Error:", err.message);
-    res.status(500).json({ error: "AI failed" });
+    res.status(500).json({ error: err.message || "Ai Failed" });
   }
 };
