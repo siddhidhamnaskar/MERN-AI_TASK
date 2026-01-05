@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-
-function StorePreview() {
+import { fetchPreview } from "../Api";
+function StorePreview({refresh}) {
   const [preview, setPreview] = useState(null);
 
-  const fetchPreview = async () => {
-    const res = await fetch("http://localhost:5000/latest");
-    const data = await res.json();
-    setPreview(data);
-  };
-
+  
   useEffect(() => {
-    fetchPreview();
+    async function fetchData() {
+    const preview=await fetchPreview();
+    setPreview(preview);
+    }
+    fetchData();
   }, []);
 
   return (

@@ -20,9 +20,15 @@ export default function App() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
+  const [refresh, setRefresh] = useState(0);
 
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
+
+
+ 
+
+const defaultImageUrl = "https://via.placeholder.com/300x200?text=No+Image";
 
 
  const nodes = [
@@ -55,15 +61,25 @@ export default function App() {
     },
   ];
 
+
+   const extractImageUrl = (text) => {
+  const match = text.match(/<img\s+src="([^"]+)"/i);
+  return match ? match[1] : "";
+};
+
   const runFlow = async () => {
     if (!inputText) return alert("Enter text first");
 
     setError(""); // Clear previous errors
     try{
     const result=await askAi(inputText);
+  
     setResult(result);
+    setImageUrl(extractImageUrl(result) || defaultImageUrl);
+  
     }
     catch(err){
+      console.log(err);
       setError(err.response.data.error || err.message || "An error occurred while fetching AI response.");
     }
 
@@ -76,7 +92,7 @@ export default function App() {
 
   try {
     setSaving(true);
-    await saveMessage(inputText, result);
+    await saveMessage(inputText, result, imageUrl);
    
     // fetchPreview(); 
 
@@ -133,7 +149,7 @@ export default function App() {
       </ReactFlow>
     </div>
      <div style={{width:'30vw'}}>
-      <StorePreview />
+      <StorePreview refresh={refresh} />
      </div>
      </div>
   </>

@@ -13,12 +13,10 @@ export default function ResultNode({ data }) {
           padding: 5,
         }}
         dangerouslySetInnerHTML={{
-    __html: data.result || "Waiting for output...",
-  }}
-     / >
-        {/* {data.result || "Waiting for output..."} */}
-      {/* </div> */}
-
+          __html: data.result || "Waiting for output...",
+        }}
+      />
+   
       <Handle type="target" position="left" />
     </div>
   );

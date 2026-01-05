@@ -1,7 +1,8 @@
 import AiMessage from "../models/AiMessage.js";
+
 export const saveResponse = async (req, res) => {
    try {
-    const { prompt, response } = req.body;
+    const { prompt, response ,imageUrl} = req.body;
 
     if (!prompt || !response) {
       return res.status(400).json({ message: "Prompt and response required" });
@@ -10,6 +11,7 @@ export const saveResponse = async (req, res) => {
     const savedMessage = await AiMessage.create({
       prompt,
       response,
+      imageUrl,
     });
 
     res.status(201).json(savedMessage);
@@ -17,3 +19,16 @@ export const saveResponse = async (req, res) => {
     res.status(500).json({ error: "Failed to save message" });
   }
 }
+
+
+export const fetchLatestStoreMessage = async (req, res) => {
+  try {
+    const latest = await AiMessage.findOne()
+      .sort({ createdAt: -1 })
+      .limit(1);
+
+    res.json(latest);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch latest" });
+  }
+};

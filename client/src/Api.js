@@ -9,12 +9,12 @@ export const askAi = async (inputText) => {
        return res.data.answer;
     } catch (err) {
       console.log(err);
-      return err;
+      throw err;
     }
 }
 
 
-export const saveMessage = async (inputText,result) => {
+export const saveMessage = async (inputText,result,imageUrl) => {
    try{
      await fetch(`${process.env.REACT_APP_API}/save-message`, {
       method: "POST",
@@ -24,12 +24,25 @@ export const saveMessage = async (inputText,result) => {
       body: JSON.stringify({
         prompt: inputText,
         response: result,
+        imageUrl: imageUrl,
       }),
     });
 
    }
    catch(err){
     console.error("Save Message Error:", err.message);
-    return err;
+    throw err;
    }
 }
+
+export const fetchPreview = async () => {
+    try{
+    const res = await fetch(`${process.env.REACT_APP_API}/latest`);
+    const data = await res.json();
+    return data;
+    }
+    catch(err){
+      console.error("Fetch Preview Error:", err.message);
+      throw err;
+    }
+  };
