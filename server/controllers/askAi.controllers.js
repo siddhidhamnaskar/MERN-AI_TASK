@@ -29,7 +29,10 @@ export const askAi = async (req, res) => {
       // stream: false,
     });
     console.log("Raw Completion:", completion.choices[0].message.content);
-    let answer = completion.choices[0].message.content;
+   let answer =
+  completion?.choices?.[0]?.message?.content || "No response generated";
+
+ answer = answer.slice(0, 1000);
 
       // // Remove HTML tags
       // answer = answer.replace(/<[^>]*>?/gm, "");
