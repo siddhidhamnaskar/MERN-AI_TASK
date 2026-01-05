@@ -28,7 +28,7 @@ export default function App() {
 
  
 
-const defaultImageUrl = "https://via.placeholder.com/300x200?text=No+Image";
+const defaultImageUrl = "";
 
 
  const nodes = [
@@ -75,7 +75,7 @@ const defaultImageUrl = "https://via.placeholder.com/300x200?text=No+Image";
     const result=await askAi(inputText);
   
     setResult(result);
-    setImageUrl(extractImageUrl(result) || defaultImageUrl);
+    setImageUrl(extractImageUrl(result) || "");
   
     }
     catch(err){
