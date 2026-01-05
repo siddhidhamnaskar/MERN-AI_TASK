@@ -86,7 +86,7 @@ const defaultImageUrl = "";
 
   try {
     setSaving(true);
-    await saveMessage(inputText, result, imageUrl);
+    await saveMessage(inputText, result);
 
     setSaved(true);
   } catch (err) {
