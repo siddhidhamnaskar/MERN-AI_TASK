@@ -16,7 +16,6 @@ const nodeTypes = {
 export default function App() {
   const [inputText, setInputText] = useState("");
   const [result, setResult] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
@@ -60,10 +59,7 @@ const defaultImageUrl = "";
   ];
 
 
-   const extractImageUrl = (text) => {
-  const match = text.match(/<img\s+src="([^"]+)"/i);
-  return match ? match[1] : "";
-};
+ 
 
   const runFlow = async () => {
     if (!inputText) return alert("Enter text first");
@@ -73,7 +69,7 @@ const defaultImageUrl = "";
     const result=await askAi(inputText);
   
     setResult(result);
-    setImageUrl(extractImageUrl(result) || "");
+  
   
     }
     catch(err){

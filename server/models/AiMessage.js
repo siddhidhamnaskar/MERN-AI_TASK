@@ -9,10 +9,7 @@ const aiMessageSchema = new mongoose.Schema(
     response: {
       type: String,
       required: true,
-    },
-    imageUrl: {
-      type: String,
-    },
+    }
   },
   { timestamps: true }
 );

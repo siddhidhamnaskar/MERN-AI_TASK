@@ -14,7 +14,7 @@ export const askAi = async (inputText) => {
 }
 
 
-export const saveMessage = async (inputText,result,imageUrl) => {
+export const saveMessage = async (inputText,result) => {
    try{
      await fetch(`${process.env.REACT_APP_API}/save-message`, {
       method: "POST",
@@ -23,8 +23,7 @@ export const saveMessage = async (inputText,result,imageUrl) => {
       },
       body: JSON.stringify({
         prompt: inputText,
-        response: result,
-        imageUrl: imageUrl,
+        response: result
       }),
     });
 

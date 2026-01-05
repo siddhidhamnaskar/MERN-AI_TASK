@@ -2,7 +2,7 @@ import AiMessage from "../models/AiMessage.js";
 
 export const saveResponse = async (req, res) => {
    try {
-    const { prompt, response ,imageUrl} = req.body;
+    const { prompt, response} = req.body;
 
     if (!prompt || !response) {
       return res.status(400).json({ message: "Prompt and response required" });
@@ -10,8 +10,7 @@ export const saveResponse = async (req, res) => {
 
     const savedMessage = await AiMessage.create({
       prompt,
-      response,
-      imageUrl,
+      response
     });
 
     res.status(201).json(savedMessage);
