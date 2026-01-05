@@ -20,7 +20,7 @@ export const askAi = async (req, res) => {
     }
 
     const completion = await openRouter.chat.send({
-      model: "gpt-5-nano",
+      model: "mistralai/mistral-7b-instruct:free",
       messages: [
       
 

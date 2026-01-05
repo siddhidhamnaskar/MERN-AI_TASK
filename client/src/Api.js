@@ -35,14 +35,3 @@ export const saveMessage = async (inputText,result,imageUrl) => {
    }
 }
 
-export const fetchPreview = async () => {
-    try{
-    const res = await fetch(`${process.env.REACT_APP_API}/latest`);
-    const data = await res.json();
-    return data;
-    }
-    catch(err){
-      console.error("Fetch Preview Error:", err.message);
-      throw err;
-    }
-  };

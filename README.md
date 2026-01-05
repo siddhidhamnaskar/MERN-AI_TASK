@@ -85,7 +85,7 @@ http://localhost:5000
 Open a new terminal:
 
 ```bash
-cd frontend
+cd client
 npm install
 npm start
 ```

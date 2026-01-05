@@ -5,7 +5,7 @@ import "reactflow/dist/style.css";
 
 import InputNode from "./nodes/InputNode";
 import ResultNode from "./nodes/ResultNode";
-import StorePreview from "./nodes/StorePreview";
+
 import { askAi, saveMessage } from "./Api";
 
 const nodeTypes = {
@@ -20,8 +20,6 @@ export default function App() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
-  const [refresh, setRefresh] = useState(0);
-
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
 
@@ -93,8 +91,6 @@ const defaultImageUrl = "";
   try {
     setSaving(true);
     await saveMessage(inputText, result, imageUrl);
-   
-    // fetchPreview(); 
 
     setSaved(true);
   } catch (err) {
@@ -107,8 +103,8 @@ const defaultImageUrl = "";
 
   return (
     <>
-    <div style={{width:'100vw',display:'flex',justifyContent:'center'}}>
-    <div style={{ height: "100vh" ,width: "70vw", position: 'relative' }}>
+  
+    <div style={{ height: "100vh" ,width: "100vw", position: 'relative' }}>
        {error && (
           <p style={{ color: "red", margin: 0,justifyContent:'center', alignItems:'center', display:'flex', position: 'absolute', top: 50, left: '50%', transform: 'translateX(-50%)', zIndex: 10 }}>
             ❌ {error}
@@ -148,10 +144,7 @@ const defaultImageUrl = "";
         <Controls />
       </ReactFlow>
     </div>
-     <div style={{width:'30vw'}}>
-      <StorePreview refresh={refresh} />
-     </div>
-     </div>
+   
   </>
 
   );
