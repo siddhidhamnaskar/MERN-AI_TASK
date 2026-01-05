@@ -1,10 +1,12 @@
 import { useState } from "react";
 import ReactFlow, { Background, Controls } from "reactflow";
 import "reactflow/dist/style.css";
-import axios from "axios";
+
 
 import InputNode from "./nodes/InputNode";
 import ResultNode from "./nodes/ResultNode";
+import StorePreview from "./nodes/StorePreview";
+import { askAi, saveMessage } from "./Api";
 
 const nodeTypes = {
   inputNode: InputNode,
@@ -14,6 +16,7 @@ const nodeTypes = {
 export default function App() {
   const [inputText, setInputText] = useState("");
   const [result, setResult] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
@@ -56,17 +59,14 @@ export default function App() {
     if (!inputText) return alert("Enter text first");
 
     setError(""); // Clear previous errors
-
-    try {
-      const res = await axios.post(`${process.env.REACT_APP_API}/ask-ai`, {
-        prompt: inputText,
-      });
-
-      setResult(res.data.answer);
-    } catch (err) {
-      console.log(err);
-      setError(err.response.data.error || err.message || "An error occurred while fetching the result.");
+    try{
+    const result=await askAi(inputText);
+    setResult(result);
     }
+    catch(err){
+      setError(err.response.data.error || err.message || "An error occurred while fetching AI response.");
+    }
+
   };
 
   const saveToDB = async () => {
@@ -76,17 +76,9 @@ export default function App() {
 
   try {
     setSaving(true);
-
-    await fetch(`${process.env.REACT_APP_API}/save-message`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt: inputText,
-        response: result,
-      }),
-    });
+    await saveMessage(inputText, result);
+   
+    // fetchPreview(); 
 
     setSaved(true);
   } catch (err) {
@@ -99,8 +91,8 @@ export default function App() {
 
   return (
     <>
-  
-    <div style={{ height: "100vh" ,width: "100vw", position: 'relative' }}>
+    <div style={{width:'100vw',display:'flex',justifyContent:'center'}}>
+    <div style={{ height: "100vh" ,width: "70vw", position: 'relative' }}>
        {error && (
           <p style={{ color: "red", margin: 0,justifyContent:'center', alignItems:'center', display:'flex', position: 'absolute', top: 50, left: '50%', transform: 'translateX(-50%)', zIndex: 10 }}>
             ❌ {error}
@@ -140,7 +132,10 @@ export default function App() {
         <Controls />
       </ReactFlow>
     </div>
-  
+     <div style={{width:'30vw'}}>
+      <StorePreview />
+     </div>
+     </div>
   </>
 
   );

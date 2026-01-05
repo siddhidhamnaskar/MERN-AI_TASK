@@ -12,9 +12,12 @@ export default function ResultNode({ data }) {
           background: "#f4f4f4",
           padding: 5,
         }}
-      >
-        {data.result || "Waiting for output..."}
-      </div>
+        dangerouslySetInnerHTML={{
+    __html: data.result || "Waiting for output...",
+  }}
+     / >
+        {/* {data.result || "Waiting for output..."} */}
+      {/* </div> */}
 
       <Handle type="target" position="left" />
     </div>
