@@ -112,6 +112,7 @@ const defaultImageUrl = "";
           style={{
             padding: "8px 16px",
              backgroundColor: inputText ? "#4CAF50" : "#ccc",
+             color: inputText ? "white" : "black",
           }}
         >
           ▶ Run Flow
