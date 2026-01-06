@@ -118,7 +118,7 @@ useEffect(() => {
     return () => clearTimeout(timer);
   }
    fetchMessages();
-}, [saved, inputText, result]);
+}, [saved,result]);
 
 
   return (

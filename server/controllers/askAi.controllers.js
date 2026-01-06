@@ -21,27 +21,29 @@ export const askAi = async (req, res) => {
 
     const completion = await openRouter.chat.send({
       model: "mistralai/mistral-7b-instruct:free",
-      messages: [
-      
-
-        { role: "user", content: prompt },
-      ],
+       messages: [
+    {
+      role: "system",
+      content: "You are a helpful AI assistant. Provide clear, concise, and relevant responses to user prompts. Do not include HTML tags or special tokens in your output."
+    },
+    {
+      role: "user",
+      content: prompt
+    }
+  ],
       // stream: false,
     });
     console.log("Raw Completion:", completion.choices[0].message.content);
    let answer =
   completion?.choices?.[0]?.message?.content || "No response generated";
 
-//  answer = answer.slice(0, 1000);
+  answer = answer.slice(0, 1000);
 
-      // // Remove HTML tags
-      // answer = answer.replace(/<[^>]*>?/gm, "");
-
-      // // Remove special tokens
-      // answer = answer
-      //   .replace(/<s>/g, "")
-      //   .replace(/<\/s>/g, "")
-      //   .trim();
+      // Remove special tokens
+      answer = answer
+        .replace(/<s>/g, "")
+        .replace(/<\/s>/g, "")
+        .trim();
       console.log("Cleaned Answer:", answer);
       res.json({ answer });
 
