@@ -126,9 +126,19 @@ http://localhost:3000
 
 ## 🎥 Demo Video
 
-A short video demo (2–3 minutes) shows:
-- Prompt entry and AI response
-- Saved record in MongoDB
+🎥 Video Demo (1–3 minutes)
+
+**Video Link:**  
+https://screenrec.com/share/7q8cJQvFnP
+
+**The demo video shows the complete flow of the application, including:**
+
+- Entering a prompt into the **Input Node** built with React Flow  
+- Clicking the **Run Flow** button to send the prompt to the backend API  
+- Generating an AI response using the **OpenRouter API**  
+- Displaying the AI response in the connected **Result Node**  
+- Saving the prompt and AI response to **MongoDB**  
+- Verifying the saved record directly in the database  
 
 ---
 
