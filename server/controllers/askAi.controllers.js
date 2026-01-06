@@ -32,7 +32,7 @@ export const askAi = async (req, res) => {
    let answer =
   completion?.choices?.[0]?.message?.content || "No response generated";
 
- answer = answer.slice(0, 1000);
+//  answer = answer.slice(0, 1000);
 
       // // Remove HTML tags
       // answer = answer.replace(/<[^>]*>?/gm, "");

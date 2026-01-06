@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactFlow, { Background, Controls } from "reactflow";
+import { getMessages } from "./Api";
 import "reactflow/dist/style.css";
 
 
@@ -7,6 +8,7 @@ import InputNode from "./nodes/InputNode";
 import ResultNode from "./nodes/ResultNode";
 
 import { askAi, saveMessage } from "./Api";
+import { OnlineStore } from "./Store";
 
 const nodeTypes = {
   inputNode: InputNode,
@@ -19,13 +21,11 @@ export default function App() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [prompt, setPrompt] = useState("");
+  const [response, setResponse] = useState("");
   const centerX = window.innerWidth / 2;
   const centerY = window.innerHeight / 2;
-
-
- 
-
-const defaultImageUrl = "";
 
 
  const nodes = [
@@ -97,10 +97,34 @@ const defaultImageUrl = "";
 };
 
 
+useEffect(() => {
+  const fetchMessages = async () => {
+      const messages = await getMessages(); 
+      setMessages(messages);
+      setPrompt(messages[0].prompt);
+      setResponse(messages[0].response);
+      console.log("Messages from DB:", messages);
+    }; 
+  if (inputText === "" || result === "") {
+    setSaved(false);
+  }
+  if(saved){
+   
+   
+    const timer = setTimeout(() => {
+      setSaved(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }
+   fetchMessages();
+}, [saved, inputText, result]);
+
+
   return (
     <>
-  
-    <div style={{ height: "100vh" ,width: "100vw", position: 'relative' }}>
+   <div style={{width:"100vw",display:'flex', flexDirection:'row'}}>
+    <div style={{ height: "100vh" ,width: "70vw", position: 'relative' }}>
        {error && (
           <p style={{ color: "red", margin: 0,justifyContent:'center', alignItems:'center', display:'flex', position: 'absolute', top: 50, left: '50%', transform: 'translateX(-50%)', zIndex: 10 }}>
             ❌ {error}
@@ -142,7 +166,10 @@ const defaultImageUrl = "";
         <Controls />
       </ReactFlow>
     </div>
-   
+    <div style={{width:"30vw"}}>
+      <OnlineStore prompt={prompt}  response={response} />
+    </div>
+   </div>
   </>
 
   );

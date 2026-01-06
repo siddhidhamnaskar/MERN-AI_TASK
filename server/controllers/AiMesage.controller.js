@@ -19,5 +19,14 @@ export const saveResponse = async (req, res) => {
   }
 }
 
+export const getMessages = async (req, res) => {
+  try {
+    const messages = await AiMessage.find().sort({ createdAt: -1 }); 
+    console.log("Retrieved Messages:", messages);   
+  res.status(200).json(messages);
+  }
+   catch (error){
+    res.status(500).json({ error: "Failed to retrieve messages" });
+   }
 
-
+}

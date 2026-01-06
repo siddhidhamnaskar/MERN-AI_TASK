@@ -34,3 +34,14 @@ export const saveMessage = async (inputText,result) => {
    }
 }
 
+export const getMessages = async () => {
+  try {
+    const res = await fetch(`${process.env.REACT_APP_API}/messages`); 
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("Get Messages Error:", err.message);
+    throw err;
+  }
+}
+
